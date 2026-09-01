@@ -15,6 +15,19 @@ int fastExponentiation(int a, int b) {
     return ans;
 }  // O(log b)
 
+int fastExp(int base, int exponent) {
+    if (exponent == 0) {
+        return 1;
+    }
+    int future = fastExp(base, exponent / 2);
+    if (exponent & 1) {
+        return base * future * future;
+    } else {
+        return future * future;
+    }
+}
+int MOD = 1e9 + 7;
+
 int power(int base, int exponent) {
     if (exponent == 0) {
         return 1;
@@ -29,7 +42,9 @@ int power(int base, int exponent) {
 }
 
 int main() {
-    cout << fastExponentiation(2, 5);
+    // cout << fastExponentiation(2, 5);
+
+    cout << fastExp(2, 10);
 
     return 0;
 }
