@@ -62,6 +62,35 @@ class Graph {
         return false;
     }
 
+    bool checkCycleUsingBfs2(int src, unordered_map<int, bool>& visited) {
+        queue<pair<int, int>> q;
+
+        q.push({src, -1});
+        visited[src] = true;
+
+        while (!q.empty()) {
+            auto front = q.front();
+            int frontNode = front.first;
+            int parent = front.second;
+            q.pop();
+
+            for (auto nbr : adjList[frontNode]) {
+                if (!visited[nbr]) {
+                    q.push({nbr, frontNode});
+                    visited[nbr] = true;
+                } else {
+                    // already visited
+                    if (parent != nbr) {
+                        // nbr is not parent of the node we are processing &&
+                        // already visited -> cycle
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
     bool checkCycleUsingDfs(int src, unordered_map<int, bool>& visited,
                             int parent) {
         visited[src] = true;
@@ -127,7 +156,8 @@ int main() {
     bool ansBfs = false;
     for (int i = 0; i < n; i++) {
         if (!visitedbfs[i]) {
-            ansBfs = g.checkCycleUsingBfs(i, visitedbfs);
+            // ansBfs = g.checkCycleUsingBfs(i, visitedbfs);
+            ansBfs = g.checkCycleUsingBfs2(i, visitedbfs);
         }
         if (ansBfs) {
             break;

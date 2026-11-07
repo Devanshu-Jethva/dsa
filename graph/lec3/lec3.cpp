@@ -33,13 +33,13 @@ class Graph {
         }
     }
 
-    void topologicalSort(int src, unordered_map<int, bool> &visited,
-                         stack<int> &ans) {
+    void topologicalSortDfs(int src, unordered_map<int, bool>& visited,
+                            stack<int>& ans) {
         visited[src] = true;
 
         for (auto neighbour : adjList[src]) {
             if (!visited[neighbour]) {
-                topologicalSort(neighbour, visited, ans);
+                topologicalSortDfs(neighbour, visited, ans);
             }
         }
 
@@ -47,13 +47,13 @@ class Graph {
         ans.push(src);
     }
 
-    void topoSortBfs(int n, vector<int> &ans) {
+    // kahn's algorithm
+    void topoSortBfs(int n, vector<int>& ans) {
         queue<int> q;
         unordered_map<int, int> indegree;
 
         // indegree calculate
         for (auto i : adjList) {
-            int src = i.first;
             for (auto nbr : i.second) {
                 indegree[nbr]++;
             }
@@ -107,7 +107,7 @@ int main() {
     g.printAdjList();
 
     vector<int> ans;
-    // connected or disconnected
+    // works on connected or disconnected components both
     g.topoSortBfs(n, ans);
 
     if (ans.size() == n) {
@@ -125,7 +125,7 @@ int main() {
     stack<int> ans;
     for (int i = 0; i < n; i++) {
         if (!visited[i]) {
-            g.topologicalSort(i, visited, ans);
+            g.topologicalSortDfs(i, visited, ans);
         }
     }
 
