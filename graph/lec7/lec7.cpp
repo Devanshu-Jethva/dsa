@@ -1,54 +1,48 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-class Graph
-{
-public:
+class Graph {
+   public:
     unordered_map<int, list<pair<int, int>>> adjList;
 
-    void addEdge(int u, int v, int wt, bool direction)
-    {
+    void addEdge(int u, int v, int wt, bool direction) {
         // direction = 1 -> undirected graph
         // direction = 0 -> directed graph
         adjList[u].push_back({v, wt});
-        if (direction == 1)
-        {
+        if (direction == 1) {
             adjList[v].push_back({u, wt});
         }
     }
 
-    void printAdjList()
-    {
-        for (auto i : adjList)
-        {
+    void printAdjList() {
+        for (auto i : adjList) {
             cout << i.first << " -> ";
-            for (auto j : i.second)
-            {
-                cout << "(" << j.first << ", "
-                     << j.second << ")";
+            for (auto j : i.second) {
+                cout << "(" << j.first << ", " << j.second << ")";
             }
             cout << endl;
         }
     }
 
-    void bellmanFordAlgo(int n, int src)
-    {
+    /**
+     * Dijkstra doesn't work for graph having -ve edge & -ve cycle
+     * if we have to find shortest distance from one node to all other node &&
+     * to detect if graph has -ve edge we can use bellmanFordAlgo
+     * It can detect -ve edge so -ve cycle as well
+     */
+    void bellmanFordAlgo(int n, int src) {
         // assuming directed weighted graph
         vector<int> dist(n, INT_MAX);
         dist[src] = 0;
 
         // n-1 relaxation step
-        for (int i = 0; i < n - 1; i++)
-        {
-            for (auto t : adjList)
-            {
-                for (auto nbr : t.second)
-                {
+        for (int i = 0; i < n - 1; i++) {
+            for (auto t : adjList) {
+                for (auto nbr : t.second) {
                     int u = t.first;
                     int v = nbr.first;
                     int wt = nbr.second;
-                    if (dist[u] != INT_MAX && dist[u] + wt < dist[v])
-                    {
+                    if (dist[u] != INT_MAX && dist[u] + wt < dist[v]) {
                         dist[v] = dist[u] + wt;
                     }
                 }
@@ -57,53 +51,42 @@ public:
 
         // to check for -ve cycle
         bool negativeCycle = false;
-        for (auto t : adjList)
-        {
-            for (auto nbr : t.second)
-            {
+        for (auto t : adjList) {
+            for (auto nbr : t.second) {
                 int u = t.first;
                 int v = nbr.first;
                 int wt = nbr.second;
-                if (dist[u] != INT_MAX && dist[u] + wt < dist[v])
-                {
+                if (dist[u] != INT_MAX && dist[u] + wt < dist[v]) {
                     negativeCycle = true;
                     dist[v] = dist[u] + wt;
                 }
             }
         }
 
-        if (negativeCycle)
-        {
+        if (negativeCycle) {
             cout << "-ve cycle present";
-        }
-        else
-        {
+        } else {
             cout << "-ve cycle absent";
         }
         cout << endl;
 
         cout << "printing distance array" << endl;
-        for (auto i : dist)
-        {
+        for (auto i : dist) {
             cout << i << " ";
         }
     }
 
-    void floydWarshall(int n)
-    {
+    void floydWarshall(int n) {
         vector<vector<int>> dist(n, vector<int>(n, 1e9));
 
         // diagonal pr zero mark karjo
-        for (int i = 0; i < n; i++)
-        {
+        for (int i = 0; i < n; i++) {
             dist[i][i] = 0;
         }
 
         // graph k according jo present distance hai usko add kiya
-        for (auto t : adjList)
-        {
-            for (auto nbr : t.second)
-            {
+        for (auto t : adjList) {
+            for (auto nbr : t.second) {
                 int u = t.first;
                 int v = nbr.first;
                 int wt = nbr.second;
@@ -111,22 +94,19 @@ public:
             }
         }
 
-        for (int helper = 0; helper < n; helper++)
-        {
-            for (int src = 0; src < n; src++)
-            {
-                for (int dest = 0; dest < n; dest++)
-                {
-                    dist[src][dest] = min(dist[src][dest], dist[src][helper] + dist[helper][dest]);
+        for (int helper = 0; helper < n; helper++) {
+            for (int src = 0; src < n; src++) {
+                for (int dest = 0; dest < n; dest++) {
+                    dist[src][dest] =
+                        min(dist[src][dest],
+                            dist[src][helper] + dist[helper][dest]);
                 }
             }
         }
 
         cout << "printing distance array : " << endl;
-        for (int i = 0; i < n; i++)
-        {
-            for (int j = 0; j < n; j++)
-            {
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
                 cout << dist[i][j] << " ";
             }
             cout << endl;
@@ -134,8 +114,7 @@ public:
     }
 };
 
-int main()
-{
+int main() {
     Graph g;
     g.printAdjList();
 

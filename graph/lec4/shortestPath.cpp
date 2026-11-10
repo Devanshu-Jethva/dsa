@@ -64,8 +64,8 @@ class Graph {
         cout << endl;
     }
 
-    void topologicalSortDfs(int src, unordered_map<int, bool> &visited,
-                            stack<int> &ans) {
+    void topologicalSortDfs(int src, unordered_map<int, bool>& visited,
+                            stack<int>& ans) {
         visited[src] = true;
 
         for (auto nbr : adjList[src]) {
@@ -156,11 +156,11 @@ int main() {
     Graph g;
     g.printAdjList();
 
-    g.addEdge(0, 1, 5, 0);
-    g.addEdge(0, 2, 6, 0);
-    g.addEdge(2, 1, -3, 0);
+    // g.addEdge(0, 1, 5, 0);
+    // g.addEdge(0, 2, 6, 0);
+    // g.addEdge(2, 1, -3, 0);
 
-    g.shortestDistanceDijkstra(0, 3);
+    // g.shortestDistanceDijkstra(0, 3);
 
     // g.addEdge(6, 3, 2, 1);
     // g.addEdge(6, 1, 14, 1);
@@ -174,17 +174,17 @@ int main() {
 
     // g.shortestDistanceDijkstra(6, 7);
 
-    // g.addEdge(0, 1, 5, 0);
-    // g.addEdge(0, 2, 3, 0);
-    // g.addEdge(1, 3, 3, 0);
-    // g.addEdge(2, 1, 2, 0);
-    // g.addEdge(2, 3, 5, 0);
-    // g.addEdge(2, 4, 6, 0);
-    // g.addEdge(4, 3, 1, 0);
-    // stack<int> topoOrder;
-    // unordered_map<int, bool> visited;
-    // g.topologicalSortDfs(0, visited, topoOrder);
-    // g.shotestPathDfs(3, topoOrder, 5);
+    g.addEdge(0, 1, 5, 0);
+    g.addEdge(0, 2, 3, 0);
+    g.addEdge(1, 3, 3, 0);
+    g.addEdge(2, 1, 2, 0);
+    g.addEdge(2, 3, 5, 0);
+    g.addEdge(2, 4, 6, 0);
+    g.addEdge(4, 3, 1, 0);
+    stack<int> topoOrder;
+    unordered_map<int, bool> visited;
+    g.topologicalSortDfs(0, visited, topoOrder);
+    g.shotestPathDfs(3, topoOrder, 5);
 
     // int src = 0;
     // int dest = 4;
