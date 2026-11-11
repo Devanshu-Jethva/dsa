@@ -7,7 +7,42 @@ using namespace std;
 
 class Solution {
    public:
-    int spanningTree(int V, unordered_map<int, vector<pair<int, int>>> &adj) {
+    int primMST(vector<vector<vector<int>>>& adj) {
+        int n = adj.size();
+        vector<bool> visited(n, false);
+        vector<int> parent(n, -1);
+
+        priority_queue<tuple<int, int, int>, vector<tuple<int, int, int>>,
+                       greater<tuple<int, int, int>>>
+            pq;  // dist, node, parent
+
+        pq.push({0, 0, -1});
+
+        int totalWt = 0;
+        while (!pq.empty()) {
+            auto [d, node, p] = pq.top();
+            pq.pop();
+
+            if (visited[node]) {
+                continue;
+            }
+
+            visited[node] = true;
+            totalWt += d;
+            parent[node] = p;
+
+            for (auto it : adj[node]) {
+                int nbr = it[0];
+                int edgeWt = it[1];
+
+                if (!visited[nbr]) {
+                    pq.push({edgeWt, nbr, node});
+                }
+            }
+        }
+        return totalWt;
+    }
+    int spanningTree(int V, unordered_map<int, vector<pair<int, int>>>& adj) {
         priority_queue<pair<int, int>, vector<pair<int, int>>,
                        greater<pair<int, int>>>
             pq;

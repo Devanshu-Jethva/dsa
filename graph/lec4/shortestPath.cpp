@@ -80,17 +80,9 @@ class Graph {
         ans.push(src);
     }
 
-    void shotestPathDfs(int dest, stack<int> topoOrder, int n) {
+    void shotestPathDfs(int src, stack<int> topoOrder, int n) {
         vector<int> dist(n, INT_MAX);
-
-        int src = topoOrder.top();
-        topoOrder.pop();
         dist[src] = 0;
-        for (auto nbr : adjList[0]) {
-            if (dist[0] + nbr.second < dist[nbr.first]) {
-                dist[nbr.first] = dist[0] + nbr.second;
-            }
-        }
 
         while (!topoOrder.empty()) {
             int topEle = topoOrder.top();

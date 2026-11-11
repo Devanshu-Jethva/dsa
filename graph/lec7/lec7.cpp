@@ -97,9 +97,11 @@ class Graph {
         for (int helper = 0; helper < n; helper++) {
             for (int src = 0; src < n; src++) {
                 for (int dest = 0; dest < n; dest++) {
-                    dist[src][dest] =
-                        min(dist[src][dest],
-                            dist[src][helper] + dist[helper][dest]);
+                    if (dist[src][helper] != 1e9 && dist[helper][dest] != 1e9) {
+                        dist[src][dest] =
+                            min(dist[src][dest],
+                                dist[src][helper] + dist[helper][dest]);
+                    }
                 }
             }
         }
